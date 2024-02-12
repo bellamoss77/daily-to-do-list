@@ -1,0 +1,101 @@
+*,
+*::before,
+*::after {
+  font-family: "duper", sans-serif;
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+body {
+  height: 100vh;
+  background: rgb(151, 8, 186);
+  background: linear-gradient(90deg, rgb(151, 8, 186) 0%, rgb(226, 227, 33) 35%, rgb(0, 212, 255) 100%);
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: white;
+  border-radius: 10px;
+  min-width: 450px;
+  min-height: 100px;
+  transform: translate(-50%, -50%);
+}
+.container .new-task {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  padding: 30px 20px;
+  margin-left: 50px;
+}
+.container .new-task input {
+  width: 75%;
+  height: 45px;
+  padding: 12px;
+  color: #000;
+  font-weight: 600;
+  position: relative;
+  border-radius: 5px;
+  font-size: 25px;
+  border: 2px solid #6521e3;
+}
+.container .new-task input:focus {
+  outline: none;
+  border-color: #9979d5;
+}
+.container .new-task button {
+  position: relative;
+  box-shadow: 5px 2px 2px 2px #1c0644;
+  font-weight: 500;
+  font-size: 16px;
+  background-color: #6521e3;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+  outline: none;
+  width: 15%;
+  height: 45px;
+  border-radius: 5px;
+  margin-left: 5px;
+}
+.container #tasks {
+  border-radius: 10px;
+  width: 100%;
+  position: relative;
+  background-color: #fff;
+  padding: 30px 20px;
+  margin-top: 10px;
+}
+.container #tasks .task {
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid #3dc681;
+  cursor: pointer;
+  background-color: #08552e;
+  color: white;
+  height: 50px;
+  margin-bottom: 8px;
+  padding: 5px 10px;
+}
+.container #tasks .task span {
+  font-size: 15px;
+  font-weight: 400;
+}
+.container #tasks .task button {
+  background-color: #df091c;
+  color: #ffffff;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  height: 100%;
+  width: 40px;
+  border-radius: 5px;
+}/*# sourceMappingURL=styles.css.map */
