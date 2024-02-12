@@ -1,11 +1,22 @@
 document.addEventListener("DOMContentLoaded", () => {
     const addBtn = document.getElementById('push');
     const inputBox = document.querySelector('.input-task-box');
+    const inputDate = document.querySelector('.input-date-box');
     const tasksContainer = document.getElementById('tasks');
 
     const createTask = () => {
         const taskText = inputBox.value.trim();
-        if (taskText) {
+        const taskDate = inputDate.value;
+
+        if (taskText && taskDate) {
+            let dateHeader = document.getElementById(`date-${taskDate}`);
+            if (!dateHeader) {
+                dateHeader = document.createElement('h3');
+                dateHeader.id = `date-${taskDate}`;
+                dateHeader.textContent = new Date(taskDate).toDateString();
+                tasksContainer.appendChild(dateHeader);
+            }
+
             const taskItem = document.createElement('div');
             taskItem.className = 'task';
 
