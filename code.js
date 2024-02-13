@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+
     const addBtn = document.getElementById('push');
     const inputBox = document.querySelector('.input-task-box');
     const inputDate = document.querySelector('.input-date-box');
@@ -15,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 dateHeader.id = `date-${taskDate}`;
                 dateHeader.textContent = new Date(taskDate).toDateString();
                 tasksContainer.appendChild(dateHeader);
+                console.log("Date header created:", dateHeader);
             }
 
             const taskItem = document.createElement('div');
@@ -61,3 +63,4 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 });
+
