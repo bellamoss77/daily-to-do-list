@@ -5,27 +5,34 @@ document.addEventListener("DOMContentLoaded", () => {
     const inputDate = document.querySelector('.input-date-box');
     const tasksContainer = document.getElementById('tasks');
 
-    const createTask = () => {
-        const taskText = inputBox.value.trim();
-        const taskDate = inputDate.value;
+    const saveTasks = () => {
+        let tasks = [];
+        tasksContainer.querySelectorAll('.task').forEach(task => {
+            let taskDate = task.getAttribute('data-date');
+            let taskText = task.querySelector('span').textContent;
+            tasks.push({ taskDate, taskText });
+        });
+        localStorage.setItem('tasks', JSON.stringify(tasks));
+        console.log("Saved tasks:", tasks);
+    };
 
+    const createTask = (taskText, taskDate) => {
         if (taskText && taskDate) {
             let dateHeader = document.getElementById(`date-${taskDate}`);
             if (!dateHeader) {
                 dateHeader = document.createElement('h3');
                 dateHeader.id = `date-${taskDate}`;
 
-                const date = new Date(taskDate);
-                const offset = date.getTimezoneOffset();
-                const adjustedDate = new Date(date.getTime() - (offset*60*1000));
-                dateHeader.textContent = adjustedDate.toISOString().split('T')[0];
-                
+                const dateParts = taskDate.split('-');
+                const formattedDate = `${dateParts[1]}/${dateParts[2]}/${dateParts[0]}`;
+                dateHeader.textContent = formattedDate;
+
                 tasksContainer.appendChild(dateHeader);
-                console.log("Date header created:", dateHeader);
             }
 
             const taskItem = document.createElement('div');
             taskItem.className = 'task';
+            taskItem.setAttribute('data-date', taskDate);
 
             const checkbox = document.createElement('input');
             checkbox.type = 'checkbox';
@@ -37,6 +44,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 taskContent.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
             });
 
+            tasksContainer.appendChild(taskItem);
+
             const deleteBtn = document.createElement('button');
             deleteBtn.textContent = 'Delete';
             deleteBtn.addEventListener('click', () => {
@@ -45,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 let remainingTasks = tasksContainer.querySelectorAll('.task');
                 let isLastTask = true;
                 remainingTasks.forEach(task => {
-                    if (task.querySelector('span').textContent !== taskText) {
+                    if (task.getAttribute('data-date') === taskDate) {
                         isLastTask = false;
                     }
                 });
@@ -53,6 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
                 if (isLastTask) {
                     dateHeader.remove();
                 }
+
+                saveTasks();
             });
 
             taskItem.appendChild(checkbox);
@@ -60,7 +71,21 @@ document.addEventListener("DOMContentLoaded", () => {
             taskItem.appendChild(deleteBtn);
 
             tasksContainer.appendChild(taskItem);
-            inputBox.value = "";
+            
+        }
+        saveTasks();
+    
+    };
+
+    const loadTasks = () => {
+        const tasks = JSON.parse(localStorage.getItem('tasks'));
+        if (tasks && Array.isArray(tasks)) {
+            console.log("Loaded tasks:", tasks);
+            tasks.forEach(({ taskText, taskDate }) => {
+                createTask(taskText, taskDate);
+            });
+        } else {
+            console.log("No valid tasks found in local storage");
         }
     };
 
@@ -72,12 +97,20 @@ document.addEventListener("DOMContentLoaded", () => {
         addBtn.style.transform = 'scale(1)';
     });
 
-    addBtn.addEventListener('click', createTask);
+    addBtn.addEventListener('click', () => {
+        createTask(inputBox.value.trim(), inputDate.value);
+        inputBox.value = "";
+        inputDate.value = "";
+    });
 
     inputBox.addEventListener('keypress', (event) => {
         if (event.keyCode === 13) { // Enter key code
-            createTask();
+            createTask(inputBox.value.trim(), inputDate.value);
+            inputBox.value = "";
+            inputDate.value = "";
         }
     });
+
+    loadTasks();
 });
 
