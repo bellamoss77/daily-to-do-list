@@ -14,7 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
             if (!dateHeader) {
                 dateHeader = document.createElement('h3');
                 dateHeader.id = `date-${taskDate}`;
-                dateHeader.textContent = new Date(taskDate).toDateString();
+
+                const date = new Date(taskDate);
+                const offset = date.getTimezoneOffset();
+                const adjustedDate = new Date(date.getTime() - (offset*60*1000));
+                dateHeader.textContent = adjustedDate.toISOString().split('T')[0];
+                
                 tasksContainer.appendChild(dateHeader);
                 console.log("Date header created:", dateHeader);
             }
@@ -35,7 +40,19 @@ document.addEventListener("DOMContentLoaded", () => {
             const deleteBtn = document.createElement('button');
             deleteBtn.textContent = 'Delete';
             deleteBtn.addEventListener('click', () => {
-                tasksContainer.removeChild(taskItem);
+                taskItem.remove();
+
+                let remainingTasks = tasksContainer.querySelectorAll('.task');
+                let isLastTask = true;
+                remainingTasks.forEach(task => {
+                    if (task.querySelector('span').textContent !== taskText) {
+                        isLastTask = false;
+                    }
+                });
+
+                if (isLastTask) {
+                    dateHeader.remove();
+                }
             });
 
             taskItem.appendChild(checkbox);

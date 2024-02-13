@@ -16,7 +16,8 @@ body {
 .container {
   display: flex;
   flex-direction: column;
-  width: 50%;
+  align-items: center;
+  width: 25%;
   position: absolute;
   top: 50%;
   left: 50%;
@@ -26,6 +27,9 @@ body {
   min-height: 100px;
   transform: translate(-50%, -50%);
 }
+.container h1 {
+  margin-top: 10px;
+}
 .container .new-task {
   display: flex;
   justify-content: center;
@@ -34,7 +38,12 @@ body {
   padding: 30px 20px;
   margin-left: 50px;
 }
+.container .new-task .inputs {
+  display: flex;
+  flex-direction: column;
+}
 .container .new-task input {
+  margin-top: 10px;
   width: 75%;
   height: 45px;
   padding: 12px;
