@@ -17,7 +17,16 @@ document.addEventListener("DOMContentLoaded", () => {
     };
 
     const createTask = (taskText, taskDate) => {
-        if (taskText && taskDate) {
+        if (taskText) {
+            if (!taskDate) {
+                let addWithoutDate = confirm("Are you sure you want to add this task without a date?");
+                if (addWithoutDate) {
+                    addToGeneralTasks(taskText);
+                } else {
+                    inputDate.focus();
+                }
+                return;
+            }
             let dateHeader = document.getElementById(`date-${taskDate}`);
             if (!dateHeader) {
                 dateHeader = document.createElement('h3');
@@ -76,6 +85,50 @@ document.addEventListener("DOMContentLoaded", () => {
         saveTasks();
     
     };
+
+    const addToGeneralTasks = (taskText) => {
+        const generalTasksContainer = document.getElementById('generalTasks');
+        if (!generalTasksContainer) {
+            console.error('General tasks container not found');
+            return;
+        }
+
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+    
+        const taskItem = document.createElement('div');
+        taskItem.className = 'task';
+    
+        const taskContent = document.createElement('span');
+        taskContent.textContent = taskText;
+    
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.addEventListener('click', () => {
+            taskItem.remove();
+            saveTasks();
+            // Check after the task is deleted
+            if (generalTasksContainer.children.length === 1) { // Only the header remains
+                generalTasksContainer.classList.remove('active');
+            }
+        });
+
+        checkbox.addEventListener('change', () => {
+            taskContent.style.textDecoration = checkbox.checked ? 'line-through' : 'none';
+        });
+    
+        taskItem.appendChild(checkbox);
+        taskItem.appendChild(taskContent);
+        taskItem.appendChild(deleteBtn);
+    
+        generalTasksContainer.appendChild(taskItem);
+    
+        // Add the active class right after adding a task
+        if (!generalTasksContainer.classList.contains('active')) {
+            generalTasksContainer.classList.add('active');
+        }
+    };
+    
 
     const loadTasks = () => {
         const tasks = JSON.parse(localStorage.getItem('tasks'));

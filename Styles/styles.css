@@ -73,7 +73,7 @@ body {
   border-radius: 5px;
   margin-left: 5px;
 }
-.container #tasks {
+.container #tasks, .container #generalTasks {
   border-radius: 10px;
   width: 100%;
   position: relative;
@@ -81,7 +81,7 @@ body {
   padding: 30px 20px;
   margin-top: 10px;
 }
-.container #tasks .task {
+.container #tasks .task, .container #generalTasks .task {
   border-radius: 5px;
   display: flex;
   align-items: center;
@@ -94,11 +94,11 @@ body {
   margin-bottom: 8px;
   padding: 5px 10px;
 }
-.container #tasks .task span {
+.container #tasks .task span, .container #generalTasks .task span {
   font-size: 25px;
   font-weight: 400;
 }
-.container #tasks .task button {
+.container #tasks .task button, .container #generalTasks .task button {
   background-color: #df091c;
   color: #ffffff;
   border: none;
@@ -107,4 +107,19 @@ body {
   height: 100%;
   width: 40px;
   border-radius: 5px;
+}
+.container #generalTasks {
+  display: none;
+  width: 100%;
+}
+.container #generalTasks.active {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.container #generalTasks .task {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
 }/*# sourceMappingURL=styles.css.map */
