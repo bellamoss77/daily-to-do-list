@@ -6,14 +6,28 @@ document.addEventListener("DOMContentLoaded", () => {
     const tasksContainer = document.getElementById('tasks');
 
     const saveTasks = () => {
-        let tasks = [];
-        tasksContainer.querySelectorAll('.task').forEach(task => {
+        let datedTasks = [];
+        let generalTasks = [];
+
+        tasksContainer.querySelectorAll('.task[data-date]').forEach(task => {
             let taskDate = task.getAttribute('data-date');
             let taskText = task.querySelector('span').textContent;
-            tasks.push({ taskDate, taskText });
+            datedTasks.push({ taskDate, taskText });
         });
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-        console.log("Saved tasks:", tasks);
+
+        const generalTasksContainer = document.getElementById('generalTasks');
+        if (generalTasksContainer) {
+            generalTasksContainer.querySelectorAll('.task').forEach(task => {
+                if (!task.hasAttribute('data-date')) {
+                    let taskText = task.querySelector('span').textContent;
+                generalTasks.push({ taskText });
+                };            
+            });
+        }
+        
+        localStorage.setItem('datedTasks', JSON.stringify(datedTasks));
+        localStorage.setItem('generalTasks', JSON.stringify(generalTasks));
+        console.log("Saved tasks:", datedTasks, generalTasks);
     };
 
     const createTask = (taskText, taskDate) => {
@@ -127,19 +141,37 @@ document.addEventListener("DOMContentLoaded", () => {
         if (!generalTasksContainer.classList.contains('active')) {
             generalTasksContainer.classList.add('active');
         }
+
+        console.log("General task added:", taskText);
+
+        saveTasks();
     };
     
 
     const loadTasks = () => {
-        const tasks = JSON.parse(localStorage.getItem('tasks'));
-        if (tasks && Array.isArray(tasks)) {
-            console.log("Loaded tasks:", tasks);
-            tasks.forEach(({ taskText, taskDate }) => {
+        const datedTasks = JSON.parse(localStorage.getItem('datedTasks'));
+        const generalTasks = JSON.parse(localStorage.getItem('generalTasks'));
+
+        console.log("Loaded dated tasks:", datedTasks);
+        console.log("Loaded general tasks:", generalTasks)
+
+        if (datedTasks && Array.isArray(datedTasks)) {
+            console.log("Loaded tasks:", datedTasks);
+            datedTasks.forEach(({ taskText, taskDate }) => {
                 createTask(taskText, taskDate);
             });
         } else {
             console.log("No valid tasks found in local storage");
-        }
+        };
+
+        if (generalTasks && Array.isArray(generalTasks)) {
+            console.log("Loaded general tasks:", generalTasks);
+            generalTasks.forEach(({ taskText }) => {
+                addToGeneralTasks(taskText);
+            });
+        } else {
+            console.log("No valid general tasks found in local storage");
+        };
     };
 
     addBtn.addEventListener('mousedown', () => {
